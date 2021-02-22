@@ -11,6 +11,10 @@ class EditEmployeePage:
         self.btn_Save = "//button[@type='submit']"
         self.btn_Detail = "//button[@type='button']"
         self.msg_edit_success = "//div[@class='ng-tns-c8-0 ng-star-inserted ng-trigger ng-trigger-flyInOut ngx-toastr toast-success']"
+        self.msg_firstname_required = "//div[@class='invalid-feedback']/div[contains(.,' First Name ')]"
+        self.msg_email_required = "//div[@id='toast-container' and contains(.,' Email')]"
+        self.msg_error_birthday = "//form/div/div/div[contains(.,'Birthday c')]"
+        self.msg_error_phone = "//form/div/div/div[contains(.,'Phone number ')]"
     def edit_profile(self, first_name, last_name, email, birth_day, phone_number, join_date):
         # Input First name
         self.driver.find_element_by_xpath(self.txt_Firstname).clear()

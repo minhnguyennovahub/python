@@ -2,9 +2,10 @@ import random
 import string
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium import webdriver
 class MinhCommons:
     def __init__(self, driver):
         self.driver = driver
@@ -25,3 +26,9 @@ class MinhCommons:
         self.result_str = ''.join(random.choice(self.letters) for i in range(length))
         return self.result_str
 
+    def copy_text(self, element):
+        self.driver.find_element_by_xpath(element).send_keys(Keys.CONTROL + 'a')
+        self.driver.find_element_by_xpath(element).send_keys(Keys.CONTROL + 'c')
+
+    def paste_text(self, element):
+        self.driver.find_element_by_xpath(element).send_keys(Keys.CONTROL + 'v')
