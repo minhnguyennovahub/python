@@ -1,3 +1,4 @@
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 
@@ -20,8 +21,12 @@ class EmployeePage:
         self.msg_noResult = "//div[@role='alert']"
         self.btn_Confirm = "//button[@class='btn btn-danger']"
         self.btn_Cancel = "//button[@class='btn btn-secondary']"
+        self.btn_sort_name = "//table/thead/tr/th[contains (.,'Name')]"
+        self.btn_sort_birthday = ""
         self.msg_Deactivate_success = "/html/body/div[@class='overlay-container']/div[@id='toast-container']/div[@class='ng-tns-c8-5 ng-star-inserted ng-trigger ng-trigger-flyInOut ngx-toastr toast-success']"
         self.msg_Activate_success = "/html/body/div[@class='overlay-container']/div[@id='toast-container']/div[@class='ng-tns-c8-6 ng-star-inserted ng-trigger ng-trigger-flyInOut ngx-toastr toast-success']"
+        self.list_name = "//tbody/tr/td[1]"
+
     def enter_Search_term(self, search_term):
         self.driver.find_element_by_xpath(self.txt_Search).send_keys(search_term)
 
@@ -48,5 +53,10 @@ class EmployeePage:
         self.driver.find_element_by_xpath\
             ("//tbody/tr[" + str(row) + "]/td[7]//button[@class='btn btn-outline-success']").click()
         self.driver.find_element_by_xpath(self.btn_Confirm).click()
+
+    def click_create_button(self):
+        self.driver.find_element(By.XPATH, self.btn_CreateEmployee).click()
+
+
 
 

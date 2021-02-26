@@ -59,7 +59,7 @@ class ActionOfEmployeeTest(unittest.TestCase):
         common.wait_displayed(editEmployee.msg_edit_success)
         check = driver.find_element_by_xpath(editEmployee.msg_edit_success).is_displayed()
 
-        #Data 2: Test with all text fields are maximum of characters
+        # Data 2: Test with all text fields are maximum of characters
         employee.click_Edit_button(2)
         time.sleep(2)
         editEmployee.edit_profile("nguyennguyennguyenng", "nguyennguyennguyenng", common.random_string(64) + "@gmail.com", "040401997", "0899875464",
