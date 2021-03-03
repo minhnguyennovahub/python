@@ -1,5 +1,8 @@
+import datetime
 import time
 import unittest
+from datetime import date
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -157,6 +160,7 @@ class CreateEmployeeTest(unittest.TestCase):
         check2 = driver.find_element(By.XPATH, create.msg_error_email).is_displayed()
         self.assertEqual(True, check2)
 
+    # Create profile failed when user inputs a signed up email
     def test_TC_CEP_08(self):
         driver = self.driver
         employee = EmployeePage(driver)
@@ -169,7 +173,108 @@ class CreateEmployeeTest(unittest.TestCase):
         create.click_save_button()
         self.assertEqual(create.url, driver.current_url)
 
+    # Password requires 5 to 40 characters
+    def test_TC_CEP_09(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        five_chars_pw = common.random_string(5)
+        forty_chars_pw = common.random_string(40)
+
+        # Create failed when Password is 5 characters
+        employee.click_create_button()
+        create.create_profile("minh", "nguyen", common.random_string(10)+ "@gmail.com", five_chars_pw,
+                              five_chars_pw, "04041997", "0899875463", "01112021")
+        check = driver.find_element(By.XPATH, create.msg_error_password).is_displayed()
+        self.assertEqual(True, check)
+
+        # Create failed when Password is 40 characters
+        driver.find_element(By.XPATH, create.txt_Pass).clear()
+        driver.find_element(By.XPATH, create.txt_Confirm_Pass).clear()
+
+        create.create_profile("minh", "nguyen", common.random_string(10) + "@gmail.com", forty_chars_pw,
+                              forty_chars_pw, "04041997", "0899875463", "01112021")
+        create.click_save_button()
+        self.assertEqual(create.url, driver.current_url)
+
+    # Confirm Password must be the same with Password
+    def test_TC_CEP_10(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        employee.click_create_button()
+
+        create.create_profile("minh", "nguyen", common.random_string(10) + "@gmail.com", common.random_string(10),
+                              common.random_string(10), "04041997", "0899875463", "01112021")
+        check = driver.find_element(By.XPATH, create.msg_error_password).is_displayed()
+        self.assertEqual(True, check)
+
+    # Create profile failed when inputting birthday field more than current date
+    def test_TC_CEP_11(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        employee.click_create_button()
+        today = date.today()
+        future_date = today + datetime.timedelta(days=1)
+        create.create_profile("minh", "nguyen", common.random_string(10) + "@gmail.com", "ducminh123",
+                              "ducminh123", future_date.strftime("%d,%m,%Y"), "0899875463", "01112021")
+        check = driver.find_element(By.XPATH, create.msg_error_birthday).is_displayed()
+        self.assertEqual(True, check)
+
+    # TC_CEP_12 cannot run for Automation test
+
+    # Create profile failed when inputting Phone number less than 10 or more than 12 number characters
+    def test_TC_CEP_13(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        employee.click_create_button()
+
+        # Test with phone number is 9 digits
+        create.create_profile("minh", "nguyen", common.random_string(10) + "@gmail.com", "ducminh123",
+                              "ducminh123", "04041997", "089987546", "01112021")
+        check = driver.find_element(By.XPATH, create.msg_error_phone).is_displayed()
+        self.assertEqual(True, check)
+
+        # Test with phone number is 13 digits
+        driver.find_element(By.XPATH, create.txt_Phone).send_keys("1234")
+        check1 = driver.find_element(By.XPATH, create.msg_error_phone).is_displayed()
+        self.assertEqual(True, check1)
+
+    # Test case TC_CEP_14 cannot run for Automation test
+    def test_TC_CEP_15(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        employee.click_create_button()
+        create.input_day_off(1, -1)
+        check = driver.find_element(By.XPATH, create.msg_error_day_off)
+        self.assertEqual(True, check)
+
+    def test_TC_CEP_16(self):
+        driver = self.driver
+        employee = EmployeePage(driver)
+        common = MinhCommons(driver)
+        create = CreateEmployeePage(driver)
+        common.wait_displayed(employee.btn_CreateEmployee)
+        employee.click_create_button()
+
+    # Test case TC_CEP_16 cannot run for Automation
+
+
     @classmethod
     def tearDown(self) -> None:
         self.driver.quit()
+
         print("done")

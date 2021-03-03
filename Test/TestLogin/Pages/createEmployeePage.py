@@ -1,5 +1,8 @@
 from selenium.webdriver.common.by import By
 
+from Test.TestLogin.Commons.commons import MinhCommons
+from Test.TestLogin.Pages.employeePage import EmployeePage
+
 
 class CreateEmployeePage:
     def __init__(self, driver):
@@ -20,8 +23,12 @@ class CreateEmployeePage:
         self.msg_lastname_required = "//div[@class='invalid-feedback']/div[contains(.,' Last')]"
         self.msg_error_email = "//div[@class='invalid-feedback']/div[contains(.,' Email')]"
         self.msg_email_required = "//div[@id='toast-container' and contains(.,' Email')]"
-        self.msg_error_birthday = "//form/div/div/div[contains(.,'Birthday c')]"
-        self.msg_error_phone = "//form/div/div/div[contains(.,'Phone number ')]"
+        self.msg_error_birthday = "//div/div/div[@class='invalid-feedback' and contains(.,'Birthday')]"
+        self.msg_error_joindate = "//div/div/div[@class='invalid-feedback' and contains(.,'Join date')]"
+        self.msg_error_phone = "//div/div/div[@class='invalid-feedback' and contains(.,'Phone')]"
+        self.msg_error_password = "//div/div/div[@class='invalid-feedback' and contains(.,'Pass')]"
+        self.msg_error_day_off = "//div/div/div[@class='invalid-feedback' and contains(.,'Days mu')]"
+
 
     def create_profile(self, first_name, last_name, email,  password, confirm_password, birth_day, phone_number, join_date):
         # Input First name
@@ -53,4 +60,9 @@ class CreateEmployeePage:
 
     def get_email(self, row):
         return self.driver.find_element(By.XPATH, "//tbody/tr[" + str(row) + "]/td[@class='align-middle'][2]").text
+
+    def input_day_off(self, row, number):
+        self.driver.find_element_by_xpath("//div["+str(row)+"]/div/div/input[@type='number']").clear()
+        self.driver.find_element_by_xpath("//div[" + str(row) + "]/div/div/input[@type='number']").send_keys(str(number))
+
 
